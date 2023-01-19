@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" style="
+    background-image: linear-gradient(#121212, #121212);
+    background-attachment: fixed;
+  ">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rest API - MVC Edit Products</title>
+    <link rel="stylesheet" href="https://www.unpkg.com/bulma@0.9.3/css/bulma.css">
+    <style>
+      #app h1 {
+        color: white;
+        text-align: center;
+      }
+      #app .label {
+        color: white;
+      }
+    </style>
+</head>
+<body>
+    <div id="app" class="container is-max-desktop mt-5">
+        <h1 class="title">Edit Product</h1>
+        <div class="field">
+            <label class="label">Product Name</label>
+            <div class="control">
+                <input type="text" placeholder="Product Name" class="input" name="name" id="name" value="<%=product.name %>">
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Product Price</label>
+            <div class="control">
+                <input type="text" placeholder="Product Price" class="input" name="price" id="price" value=<%=product.price %> >
+            </div>
+        </div>
+        <div class="control">
+            <button class="button is-warning" id="save" onclick=<%="edit(" +product.id+ ")" %> >UPDATE</button>
+        </div>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        const edit = (id) => {
+            axios({
+                method: 'put', 
+                url: '/api/product/' + id, 
+                data: {
+                    name  : document.getElementById("name").value.trim(), 
+                    price : document.getElementById("price").value.trim()
+                }
+            }).then((result) => {
+                if (document.getElementById("name").value.trim() == "" || document.getElementById("price").value.trim() == "" || document.getElementById("price").value <= 0 || isNaN(document.getElementById("price").value)) {
+                    alert('Info status: Data GAGAL diedit')
+                }
+                else {
+                    alert('Info status: ' + result.status)
+                }
+                window.location = "/";
+            }).catch((err) => {
+                alert('error ' + err)
+            });
+        }
+    </script>
+</body>
+</html>
